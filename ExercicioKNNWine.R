@@ -1,5 +1,5 @@
 setwd("~/Documents/Software Engineering/UFG/mestrado/ARP/Aula 3 - LDA,QDA,KNN/knn")
-wine <- read.csv("wine.csv",header=TRUE)
+wine <- read.csv("wine.csv",header=FALSE)
 names(wine) <- c("Class", "Alcohol","Malic acid","Ash", "Alcalinity of ash" ,"Magnesium","Total phenols","Flavanoids" ,"Nonflavanoid phenols" ,"Proanthocyanins" ,"Color intensity",
 "Hue" ,"OD280/OD315 of diluted wines" ,"Proline" )
 
@@ -19,8 +19,8 @@ predict <- function(test_data, train_data, k_value){
   pred <- c()  #empty pred vector
   #LOOP-1
   for(i in c(1:nrow(test_data))){
-    distVector =c()
-    classesVector = c()
+    distVector = NULL
+    classesVector = NULL
     class1 = 0
     class2 = 0
     class3 = 0
@@ -33,29 +33,29 @@ predict <- function(test_data, train_data, k_value){
 
       classesVector <- c(classesVector, train_data[j,][[1]])
     }
-
     eu <- data.frame(classesVector, distVector)
-
     eu <- eu[order(eu$distVector),]
-    eu <- eu[1:k_value,]
 
-    for(k in c(1:nrow(eu))){
-      if(eu[1] == 1){
+    eu <- eu[1:k_value,]
+    print(eu[1])
+    for(k in c(1:k_value)){
+
+      if(eu$classesVector[k] == 1){
         class1 = class1 + 1
       }
-      if(eu[1] == 2){
+      if(eu$classesVector[k] == 2){
         class2 = class2 + 1
     }
-    if(eu[1]==3){
+      if(eu$classesVector[k]==3){
       class3 = class3 +1 ;
     }
   }
+    VectorMaximum <- c(class1,class2,class3)
 
-
-    classesVector <- c(class1,class2,class3)
-
-    maximumValue <- which.max(classesVector)
+    maximumValue <- which.max(VectorMaximum)
     pred <-  pred <- c(pred, maximumValue)
+    print(maximumValue)
+    print("---")
   }
 
   return(pred)
@@ -73,7 +73,7 @@ accuracy <- function(test_data){
   return(accu)
 }
 
-predictions <- predict(wine,wine,1)
+predictions <- predict(wine,wine,3)
 
 wine[,15] <- predictions
 print(accuracy(wine))
