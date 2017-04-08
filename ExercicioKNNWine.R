@@ -16,8 +16,7 @@ euclideanDist <- function(a, b){
 
 
 predict <- function(test_data, train_data, k_value){
-  pred <- c()  #empty pred vector
-  #LOOP-1
+  pred <- c()
   for(i in c(1:nrow(test_data))){
     distVector = NULL
     classesVector = NULL
@@ -26,27 +25,23 @@ predict <- function(test_data, train_data, k_value){
     class3 = 0
 
     for(j in c(1:nrow(train_data))){
-
-
       distVector <- c(distVector, euclideanDist(test_data[i,], train_data[j,]))
-
-
       classesVector <- c(classesVector, train_data[j,][[1]])
     }
-    eu <- data.frame(classesVector, distVector)
-    eu <- eu[order(eu$distVector),]
 
-    eu <- eu[1:k_value,]
-    print(eu[1])
+    neighborsVector <- data.frame(classesVector, distVector)
+    neighborsVector <- neighborsVector[order(neighborsVector$distVector),]
+
+    neighborsVector <- neighborsVector[1:k_value,]
     for(k in c(1:k_value)){
 
-      if(eu$classesVector[k] == 1){
+      if(neighborsVector$classesVector[k] == 1){
         class1 = class1 + 1
       }
-      if(eu$classesVector[k] == 2){
+      if(neighborsVector$classesVector[k] == 2){
         class2 = class2 + 1
-    }
-      if(eu$classesVector[k]==3){
+     }
+       if(neighborsVector$classesVector[k]==3){
       class3 = class3 +1 ;
     }
   }
