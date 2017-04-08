@@ -15,7 +15,7 @@ euclideanDist <- function(a, b){
 }
 
 
-knn_predict <- function(test_data, train_data, k_value){
+predict <- function(test_data, train_data, k_value){
   pred <- c()  #empty pred vector
   #LOOP-1
   for(i in c(1:nrow(test_data))){
@@ -73,7 +73,7 @@ accuracy <- function(test_data){
   return(accu)
 }
 
-predictions <- knn_predict(wine,wine,1)
+predictions <- predict(wine,wine,1)
 
 wine[,15] <- predictions
 print(accuracy(wine))
