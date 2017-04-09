@@ -57,20 +57,33 @@ predict <- function(test_data, train_data, k_value){
 
 }
 
-accuracy <- function(test_data){
+accuracy <- function(classes,results){
   correct = 0
-  for(i in c(1:nrow(test_data))){
-    if(test_data[i,15] == test_data[i,1]){
+  for(i in c(1:length(results))){
+    if(classes[i] == results[i]){
       correct = correct+1
     }
   }
-  accu = correct/nrow(test_data) * 100
+  accu = correct/length(results) * 100
   return(accu)
 }
 
-predictions <- predict(wine,wine,3)
 
-wine[,15] <- predictions
-print(accuracy(wine))
+#Split data into training and test sets
+smp_size <- floor(0.70 * nrow(wine))
+set.seed(123)
+train_ind <- sample(seq_len(nrow(wine)), size = smp_size)
+train_wine <- wine[train_ind, ]
+test_wine <- wine[-train_ind, ]
+
+#Data prediction
+k <- 3
+predictions <- predict(test_wine,train_wine,k)
+results <- predictions
+
+#Print accuracy
+print(accuracy(test_wine[,1],results))
+
+
 
 
